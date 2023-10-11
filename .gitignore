@@ -1,0 +1,14 @@
+# Archivos y directorios específicos de Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Archivos y directorios específicos de Poetry
+poetry.lock
+
+
+# Otros archivos y directorios que podrías querer ignorar (adapta según tus necesidades)
+.DS_Store
+.idea/
+.vscode/
+*.log
