@@ -12,3 +12,7 @@ poetry.lock
 .idea/
 .vscode/
 *.log
+
+# Archivos de variables de ambiente
+
+.env
