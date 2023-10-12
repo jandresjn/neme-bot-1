@@ -1,42 +1,57 @@
 import streamlit as st
+import random
+import time
+from components.sidebar import sidebar
 
 # Page title
 def main():
-    # Sidebar
-    st.sidebar.title("Selección de Modelo")
-    model_option = st.sidebar.selectbox(
-        "Elija el modelo:",
-        ("Modelo OpenAI", "Modelo LLama 2 7B", "Modelo Hugging Open")
-    )
 
+    sidebar()
+    
     # Main content
-    st.title("Probando modelos LLM Libres y Pagos")
+    st.title("Probando modelos LLM - Demo🦊")
     st.markdown(
     """
-    Aplicación de Modelos de Lenguaje Libres en Chatbots de Data Aumentada.
-    
-    - **Jorge Andres Jaramillo Neme**
+    **Aplicación de Modelos de Lenguaje Libres en Chatbots de Data Aumentada**
     """
-)
-    st.write("Chat:")
-    user_input = st.text_input("Escribe tu mensaje aquí:")
-    if user_input:
-        st.write(f"Usuario: {user_input}")
-        # Aquí podrías añadir la respuesta del modelo al mensaje del usuario,
-        # algo así como:
-        # response = get_model_response(user_input, model_option)
-        # st.write(f"Modelo: {response}")
-    uploaded_file = st.file_uploader("Subir archivo", type=['txt', 'pdf'])
-    
-    
-    if uploaded_file:
-        st.write("Archivo subido con éxito.")
-        # Aquí puedes procesar el archivo según el modelo seleccionado, 
-        # por ejemplo:
-        # if model_option == "Modelo A":
-        #     process_with_model_a(uploaded_file)
-    
+    )
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
 
+    # Display chat messages from history on app rerun
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+    
+    # React to user input
+    if prompt := st.chat_input("Pregúntame sobre tus documentos :)"):
+        # Display user message in chat message container
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        full_response = ""
+        assistant_response = random.choice(
+            [
+                "Hablame mano",
+                "Todo bien?",
+                "De qué me hablas viejo",
+            ]
+        )
+        # Simulate stream of response with milliseconds delay
+        for chunk in assistant_response.split():
+            full_response += chunk + " "
+            time.sleep(0.05)
+            # Add a blinking cursor to simulate typing
+            message_placeholder.markdown(full_response + "▌")
+        message_placeholder.markdown(full_response)
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": full_response})
 
 if __name__ == "__main__":
     main()
