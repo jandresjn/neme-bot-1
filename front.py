@@ -13,7 +13,8 @@ from langchain.prompts.chat import ChatPromptTemplate
 import whisper
 from components.faq import faqMD
 import torch
-
+from langchain.llms import OpenAI
+from langchain import PromptTemplate
 
 from dotenv import load_dotenv, find_dotenv
 
@@ -26,7 +27,13 @@ def set_open_api_key(api_key: str):
     st.session_state["open_api_key_configured"] = True
     print('OPENAI API key is Configured Successfully!')
 
+# Template para detectar palabras repetidas
+template = """Texto: {texto}
 
+Instrucciones: Identifica las palabras que se repiten en el texto anterior y lista cada palabra repetida junto con la cantidad de veces que aparece.
+
+Palabras repetidas:"""
+prompt = PromptTemplate(template=template, input_variables=["texto"])
 #def transcribe(audio_path):
  #   audio = whisper.load_audio(audio_path)
   #  audio = whisper.pad_or_trim(audio)
@@ -100,6 +107,7 @@ def main():
         if open_api_key_input:
             # print(f'Entered API is {open_api_key_input}')
             set_open_api_key(open_api_key_input)
+            os.environ["OPENAI_API_KEY"] =str(open_api_key_input)
 
         if not st.session_state.get("open_api_key_configured"):
             st.error("Please configure your Open API key!")
@@ -153,6 +161,15 @@ def main():
         # Muestra la transcripción
         st.write("Transcripción:")
         st.text_area("Resultado:", transcription, height=250)
+        # Formatear el prompt con la transcripción
+        formatted_prompt = prompt.format(texto=transcription)
+
+        # Ejecutar el modelo de lenguaje con el prompt formateado
+        palabras_repetidas = llm(formatted_prompt)
+
+        # Mostrar las palabras repetidas
+        st.write("Análisis de Palabras Repetidas:")
+        st.text(palabras_repetidas)
 
 
 if __name__ == "__main__":
