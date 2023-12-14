@@ -87,7 +87,6 @@ def generate_llama2_response(prompt_input):
 model = whisper.load_model("base")
 model.device
 
-llm = OpenAI(temperature=0.9)
 # Page title
 def main():
 
@@ -166,6 +165,7 @@ def main():
         # Formatear el prompt con la transcripción
         formatted_prompt = prompt.format(texto=transcription)
 
+        llm = OpenAI(temperature=0.9)
         # Ejecutar el modelo de lenguaje con el prompt formateado
         palabras_repetidas = llm(formatted_prompt)
 
