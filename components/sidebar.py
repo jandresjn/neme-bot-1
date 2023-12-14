@@ -9,22 +9,8 @@ def set_open_api_key(api_key: str):
 def sidebar():
     with st.sidebar:
         st.title("Instrucciones 🐹")
-        st.subheader("1. Selección de modelo")
-        model_option = st.sidebar.selectbox(
-            "Elija el modelo:",
-            ("Modelo OpenAI", "Modelo LLama 2 7B", "Modelo Hugging Open")
-        )
-        st.sidebar.subheader('2. ¡Sube un documento para interactuar!')
-        uploaded_file = st.sidebar.file_uploader("Subir archivo", type=['txt', 'pdf'])
-        
-        if uploaded_file:
-            st.write("Archivo subido con éxito.")
-            st.write("¡**Ya puedes hablar con tu documento** :sunglasses:!")
-            # Aquí puedes procesar el archivo según el modelo seleccionado, 
-            # por ejemplo:
-            # if model_option == "Modelo A":
-            #     process_with_model_a(uploaded_file)
-        st.sidebar.subheader('3. Configuración de Key')
+
+        st.sidebar.subheader('1. Configuración de Key')
         st.markdown(
             "Ingresa tu [OpenAI API key](https://platform.openai.com/account/api-keys)🔑\n"  # noqa: E501
         )
@@ -45,16 +31,30 @@ def sidebar():
         else:
             st.markdown("Open API Key Configured!")
 
+        st.sidebar.subheader('2. ¡Sube un audio o habla en el chat!')
+        uploaded_file = st.sidebar.file_uploader("Subir audio", type=['txt', 'pdf','wav'])
+        
+        if uploaded_file:
+            st.write("Audio subido con éxito.")
+            st.write("¡**Espera las correcciones a continuación** :sunglasses:!")
+            st.session_state['uploaded_file'] = uploaded_file
+
+            # Aquí puedes procesar el archivo según el modelo seleccionado, 
+            # por ejemplo:
+            # if model_option == "Modelo A":
+            #     process_with_model_a(uploaded_file)
+        st.sidebar.subheader('3. Espera las recomendaciones del experto 🐹')
         st.markdown("---")
         st.markdown("# About")
         st.markdown(
-            "📖 App de prueba de modelos LLM"
+            "Desarrollar un prototipo de aplicación de procesamiento de lenguaje natural (PLN) que utilice un modelo para transcribir texto de audio o video y, posteriormente, emplee un modelo de lenguaje para identificar y cuantificar muletillas en el habla. La aplicación apunta a mejorar las habilidades de comunicación verbal de los usuarios proporcionando retroalimentación específica y sugerencias para mejorar."
         )
-        st.markdown("Made by [**Jorge Jaramillo**](https://github.com/jandresjn/neme-bot-1)")
-        st.markdown("Desarrollo de Proyectos de IA")
-        st.markdown("Credits for Template [amjadraza](https://github.com/amjadraza/langchain-streamlit-docker-template/blob/main/demo_app/main.py")
+        st.markdown("Made by [**Jorge Jaramillo**](https://github.com/jandresjn/neme-bot-1) y [Leonardo Grisales](https://github.com/jandresjn/neme-bot-1)")
+        st.markdown("Procesamiento de Datos Secuenciales - UAO")
+        #st.markdown("Credits for Template [amjadraza](https://github.com/amjadraza/langchain-streamlit-docker-template/blob/main/demo_app/main.py")
         
         st.markdown("---")
 
         # About component
         faqMD()
+    return uploaded_file

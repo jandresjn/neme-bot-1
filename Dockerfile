@@ -9,7 +9,8 @@ RUN apt-get update -y && apt-get install build-essential -y
 
 WORKDIR /app
 COPY --from=build-stage /tmp/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt \
+    &&  apt-get update && apt-get install libsm6 libxrender1      libfontconfig1 libice6 ffmpeg libxext6 -y
 RUN pwd 
 COPY  . .
 

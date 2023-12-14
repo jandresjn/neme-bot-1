@@ -8,11 +8,10 @@ def faqMD():
         """
 # FAQ
 ## Librerías Utilizadas
-Langchain y otras :O
-## ¿Como probar la app?
-1. Escoge el modelo deseado.
-2. Sube algún documento.
-3. ¡Pregunta sobre tus documentos!
-
+Langchain,streamlit,whisper y otras :O
+## ¿Como pasar la materia?
+1. Recuéstate.
+2. Llora.
+3. Programe
 """
     )
