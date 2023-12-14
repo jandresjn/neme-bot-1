@@ -86,6 +86,8 @@ def generate_llama2_response(prompt_input):
 
 model = whisper.load_model("base")
 model.device
+
+llm = OpenAI(temperature=0.9)
 # Page title
 def main():
 
